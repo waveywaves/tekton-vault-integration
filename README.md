@@ -15,7 +15,37 @@ This is a simple example of how to use Tekton Pipelines with Vault.
 2. Install Vault
 3. Install Secrets Store CSI Driver
 
-### Installing Vault on Kind
+### Installing Tekton Pipelines
+
+To install Tekton Pipelines on your Kind cluster:
+
+1. Install the Tekton CRDs and core components:
+```bash
+kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+```
+
+2. Verify the installation:
+```bash
+kubectl get pods --namespace tekton-pipelines
+```
+
+You should see several Tekton-related pods running in the `tekton-pipelines` namespace:
+- tekton-pipelines-controller
+- tekton-pipelines-webhook
+
+3. (Optional) Install Tekton Dashboard:
+```bash
+kubectl apply --filename https://storage.googleapis.com/tekton-releases/dashboard/latest/release.yaml
+```
+
+4. (Optional) Verify dashboard installation:
+```bash
+kubectl get pods --namespace tekton-pipelines
+```
+
+You should see the `tekton-dashboard` pod running if you installed it.
+
+### Installing Vault
 
 To install Vault on your Kind cluster:
 
@@ -60,7 +90,7 @@ helm repo update
 kubectl create namespace csi-driver
 ```
 
-3. Install the Secrets Store CSI Driver using Helm:
+3. Install the Secrets Store CSI Driver
 ```bash
 helm install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver \
   --namespace csi-driver \
