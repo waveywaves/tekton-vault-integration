@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: vault-secret-pipeline
+spec:
+  tasks:
+    - name: secret-task
+      taskRef:
+        name: secret-task
+      runAfter: [] 

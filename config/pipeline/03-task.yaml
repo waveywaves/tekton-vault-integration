@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: secret-task
+spec:
+  steps:
+    - name: use-secret
+      image: ubuntu
+      script: |
+        #!/usr/bin/env bash
+        echo "Reading secrets from mounted volume..."
+        echo "Username: $(cat /mnt/secrets/username)"
+        echo "Password: $(cat /mnt/secrets/password)"
+      volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets"
+          readOnly: true
+  volumes:
+    - name: secrets-store-inline
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: "vault-secret" 

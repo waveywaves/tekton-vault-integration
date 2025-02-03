@@ -1,0 +1,9 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: vault-secret-pipeline-run
+spec:
+  pipelineRef:
+    name: vault-secret-pipeline
+  taskRunTemplate:
+    serviceAccountName: pipeline-sa 
