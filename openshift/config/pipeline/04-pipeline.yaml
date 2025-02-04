@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: vault-secret-pipeline
+  namespace: tekton-vault
+spec:
+  tasks:
+    - name: read-secret
+      taskRef:
+        name: secret-task 
