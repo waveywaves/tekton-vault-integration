@@ -96,4 +96,15 @@ tkn pipelinerun logs vault-secret-pipeline-run -n tekton-vault -f
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. 
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## References
+
+- [Tekton CSI Volumes](https://tekton.dev/docs/pipelines/workspaces/#using-csi-volumes) - Official Tekton documentation for CSI volume usage
+- [Vault CSI Provider](https://github.com/hashicorp/vault-csi-provider) - Official HashiCorp Vault CSI Provider
+- [Vault CSI Provider Examples](https://github.com/hashicorp/vault-csi-provider/tree/main/examples) - Example configurations for Vault CSI Provider
+- [Secrets Store CSI Driver](https://secrets-store-csi-driver.sigs.k8s.io/introduction) - Kubernetes Secrets Store CSI Driver documentation
+- [Vault Kubernetes Auth](https://www.vaultproject.io/docs/auth/kubernetes) - Vault Kubernetes authentication setup
+- [Red Hat Integration Guide](https://cloud.redhat.com/blog/integrating-hashicorp-vault-in-openshift-4) - OpenShift integration with Vault 
+- [OpenShift Pipelines](https://docs.openshift.com/container-platform/latest/cicd/pipelines/understanding-openshift-pipelines.html) - Understanding OpenShift Pipelines
+- [Vault CSI Tutorial](https://learn.hashicorp.com/tutorials/vault/kubernetes-secret-store-driver) - Step-by-step guide for Vault CSI integration
