@@ -11,7 +11,7 @@ oc apply -f openshift/config/pipeline/04-pipeline.yaml
 oc apply -f openshift/config/pipeline/05-pipeline-run.yaml
 
 echo "Waiting for pipeline run to complete..."
-tkn pipelinerun wait vault-secret-pipeline-run -n tekton-vault --timeout 120s
+oc wait --for=condition=succeeded pipelinerun/vault-secret-pipeline-run -n tekton-vault --timeout=120s
 
 echo "Pipeline run logs:"
 if ! tkn pipelinerun logs vault-secret-pipeline-run -n tekton-vault -f; then
