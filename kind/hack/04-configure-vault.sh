@@ -25,7 +25,7 @@ kubectl create clusterrolebinding vault-auth-binding \
     --serviceaccount=default:vault-auth || true
 
 # Create pipeline service account
-kubectl apply -f ../config/pipeline/01-pipeline-sa.yaml
+kubectl apply -f ../../kind/config/pipeline/01-pipeline-sa.yaml
 
 # Configure Kubernetes authentication
 KUBE_HOST="https://kubernetes.default.svc.cluster.local:443"

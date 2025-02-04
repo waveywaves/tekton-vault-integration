@@ -13,7 +13,7 @@ Example of integrating Tekton Pipelines with HashiCorp Vault using the Secrets S
 
 ```bash
 # Run complete setup
-./hack/setup-all.sh
+./kind/hack/setup-all.sh
 ```
 
 This will:
@@ -26,21 +26,22 @@ This will:
 
 ## Manual Setup
 
-Individual setup scripts are available in the `hack` directory:
+Individual setup scripts are available in the `kind/hack` directory:
 
 ```bash
-./hack/00-setup-kind-cluster.sh
-./hack/01-install-tekton-pipelines.sh
-./hack/02-install-vault.sh
-./hack/03-install-csi-provider.sh
-./hack/04-configure-vault.sh
-./hack/05-setup-pipeline.sh
+./kind/hack/00-setup-kind-cluster.sh
+./kind/hack/01-install-tekton-pipelines.sh
+./kind/hack/02-install-vault.sh
+./kind/hack/03-install-csi-provider.sh
+./kind/hack/04-configure-vault.sh
+./kind/hack/05-setup-pipeline.sh
 ```
 
 ## Configuration
 
-- Vault configuration: `config/kind/config.yaml`
-- Pipeline manifests: `config/pipeline/*.yaml`
+All configuration files are in the `kind/config` directory:
+- Kind cluster: `kind/config/kind/config.yaml`
+- Pipeline manifests: `kind/config/pipeline/*.yaml`
 
 ## Cleanup
 

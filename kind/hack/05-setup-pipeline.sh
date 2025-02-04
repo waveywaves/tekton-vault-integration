@@ -4,11 +4,11 @@ set -e
 echo "Setting up Tekton pipeline with Vault integration..."
 
 # Apply all manifests
-kubectl apply -f ../config/pipeline/01-pipeline-sa.yaml
-kubectl apply -f ../config/pipeline/02-secret-provider-class.yaml
-kubectl apply -f ../config/pipeline/03-task.yaml
-kubectl apply -f ../config/pipeline/04-pipeline.yaml
-kubectl apply -f ../config/pipeline/05-pipeline-run.yaml
+kubectl apply -f ../../kind/config/pipeline/01-pipeline-sa.yaml
+kubectl apply -f ../../kind/config/pipeline/02-secret-provider-class.yaml
+kubectl apply -f ../../kind/config/pipeline/03-task.yaml
+kubectl apply -f ../../kind/config/pipeline/04-pipeline.yaml
+kubectl apply -f ../../kind/config/pipeline/05-pipeline-run.yaml
 
 echo "Waiting for pipeline run to complete..."
 kubectl wait --for=condition=succeeded pipelinerun/vault-secret-pipeline-run --timeout=120s

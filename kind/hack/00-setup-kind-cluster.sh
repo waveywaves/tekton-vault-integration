@@ -5,7 +5,7 @@ echo "Setting up kind cluster..."
 
 # Get the script's directory
 SCRIPT_DIR="$(dirname "$0")"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 # Delete existing cluster if it exists
 echo "Deleting existing kind cluster (if any)..."
@@ -16,7 +16,7 @@ mkdir -p /tmp/kind-mount
 
 # Create new cluster
 echo "Creating new kind cluster..."
-kind create cluster --config "${PROJECT_ROOT}/config/kind/config.yaml"
+kind create cluster --config "${PROJECT_ROOT}/kind/config/kind/config.yaml"
 
 # Wait for cluster to be ready
 echo "Waiting for cluster to be ready..."
