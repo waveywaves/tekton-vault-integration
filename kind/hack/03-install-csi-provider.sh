@@ -3,32 +3,32 @@ set -e
 
 echo "Installing Secrets Store CSI Driver and Vault Provider..."
 
-# Add Secrets Store CSI Driver Helm repository
+# get the csi driver helm stuff - this is where all the good stuff lives
 helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
 helm repo update
 
-# Create namespace for CSI driver
+# make a home for our csi driver
 kubectl create namespace csi-driver || true
 
-# Install Secrets Store CSI Driver
+# install the csi driver with some nice features turned on
 helm upgrade --install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver \
   --namespace csi-driver \
   --set syncSecret.enabled=true \
   --set enableSecretRotation=true
 
-# Wait for CSI driver DaemonSet to be ready
+# wait for the csi driver to get its act together
 echo "Waiting for CSI driver to be ready..."
 kubectl rollout status daemonset/csi-secrets-store-secrets-store-csi-driver -n csi-driver --timeout=120s
 
-# Install Vault CSI Provider
+# now lets grab the vault provider - this is what lets us talk to vault
 kubectl apply -f https://raw.githubusercontent.com/hashicorp/vault-csi-provider/main/deployment/vault-csi-provider.yaml
 
-# Wait for Vault CSI provider DaemonSet to be ready
+# give the vault provider a moment to settle in
 echo "Waiting for Vault CSI provider to be ready..."
-sleep 10  # Give some time for the DaemonSet to be created
+sleep 10  # gotta give it a sec to create everything
 kubectl rollout status daemonset/vault-csi-provider -n csi-driver --timeout=120s || true
 
-# Verify installation
+# double check that everything's looking good
 echo "Verifying CSI installation..."
 kubectl get pods,daemonset -n csi-driver
 

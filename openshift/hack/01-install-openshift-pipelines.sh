@@ -3,7 +3,7 @@ set -e
 
 echo "Installing OpenShift Pipelines..."
 
-oc apply -f ../config/operators/pipeline-operator.yaml
+oc apply -f openshift/config/operators/pipeline-operator.yaml
 
 echo "Waiting for OpenShift Pipelines operator to be ready..."
 while ! oc get deployment openshift-pipelines-operator -n openshift-operators &> /dev/null; do

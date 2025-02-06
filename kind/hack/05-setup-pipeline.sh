@@ -3,7 +3,7 @@ set -e
 
 echo "Setting up Tekton pipeline with Vault integration..."
 
-# Apply all manifests
+# create pipeline
 kubectl apply -f ../../kind/config/pipeline/01-pipeline-sa.yaml
 kubectl apply -f ../../kind/config/pipeline/02-secret-provider-class.yaml
 kubectl apply -f ../../kind/config/pipeline/03-task.yaml

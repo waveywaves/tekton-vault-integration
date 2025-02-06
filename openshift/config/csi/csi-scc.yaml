@@ -1,0 +1,35 @@
+# yo this is the scc that the csi driver needs
+# we need this because:
+# 1. csi driver needs privileged access for mounting
+# 2. needs hostpath volumes for the csi socket
+# 3. needs to run as root for some operations
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: csi-privileged-scc
+allowHostDirVolumePlugin: true
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+allowedCapabilities:
+- "*"
+defaultAddCapabilities: null
+fsGroup:
+  type: RunAsAny
+groups: []
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities: []
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+users:
+- system:serviceaccount:csi-driver:secrets-store-csi-driver
+volumes:
+- "*" 

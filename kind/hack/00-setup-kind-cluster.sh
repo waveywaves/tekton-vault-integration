@@ -3,26 +3,22 @@ set -e
 
 echo "Setting up kind cluster..."
 
-# Get the script's directory
+# figure out where we are and where we need to be
 SCRIPT_DIR="$(dirname "$0")"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
-# Delete existing cluster if it exists
 echo "Deleting existing kind cluster (if any)..."
 kind delete cluster || true
 
-# Create mount directory
 mkdir -p /tmp/kind-mount
 
-# Create new cluster
 echo "Creating new kind cluster..."
 kind create cluster --config "${PROJECT_ROOT}/kind/config/kind/config.yaml"
 
-# Wait for cluster to be ready
 echo "Waiting for cluster to be ready..."
 kubectl wait --for=condition=ready node/kind-control-plane --timeout=120s
 
-# Update kubeconfig
+# double check our connection details
 echo "Updating kubeconfig..."
 kubectl cluster-info
 

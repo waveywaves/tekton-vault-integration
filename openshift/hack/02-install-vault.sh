@@ -10,7 +10,7 @@ oc create namespace vault || true
 
 helm upgrade --install vault hashicorp/vault \
   --namespace vault \
-  -f ../config/vault/values.yaml
+  -f openshift/config/vault/values.yaml
 
 echo "Waiting for Vault pod to be ready..."
 oc wait --for=condition=ready pod -l app.kubernetes.io/name=vault -n vault --timeout=120s

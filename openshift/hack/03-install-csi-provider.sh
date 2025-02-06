@@ -3,25 +3,36 @@ set -e
 
 echo "Installing Secrets Store CSI Driver and Vault Provider..."
 
+# create our namespaces
 oc create namespace csi-driver || true
 oc create namespace csi || true
 
-oc apply -f ../config/csi/rbac.yaml
-oc apply -f ../config/csi/scc.yaml
-oc adm policy add-scc-to-user vault-csi-provider-scc system:serviceaccount:csi:secrets-store-csi-driver
+# set up the privileged scc first - csi driver needs this to work
+oc apply -f openshift/config/csi/csi-scc.yaml
 
+# create and set up rbac - this creates the service account
+oc apply -f openshift/config/csi/rbac.yaml
+
+# give the service account access to our privileged scc
+oc adm policy add-scc-to-user csi-privileged-scc -z secrets-store-csi-driver -n csi-driver
+
+# add the helm repo for the csi driver
 helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
 helm repo update
 
+# install the csi driver - this needs privileged access
 helm upgrade --install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver \
   --namespace csi-driver \
-  -f ../config/csi/values.yaml
+  --set linux.privileged=true \
+  --set linux.securityContext.privileged=true \
+  -f openshift/config/csi/values.yaml
 
 echo "Waiting for CSI driver to be ready..."
 oc rollout status daemonset/csi-secrets-store-secrets-store-csi-driver -n csi-driver --timeout=120s
 
-oc apply -f ../config/csi/vault-provider.yaml
-oc apply -f ../config/csi/secret-provider-class.yaml
+# now set up the vault provider
+oc apply -f openshift/config/csi/vault-provider.yaml
+oc apply -f openshift/config/csi/secret-provider-class.yaml
 
 echo "Waiting for Vault CSI provider to be ready..."
 sleep 10

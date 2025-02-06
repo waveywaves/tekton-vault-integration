@@ -1,4 +1,24 @@
+global:
+  openshift: true
 server:
   dev:
     enabled: true
-    devRootToken: root # don't do this in prod
+    devRootToken: root
+  standalone:
+    enabled: true
+  serviceAccount:
+    name: vault
+  extraSecurityContextConstraints:
+    - vault-scc
+  securityContext:
+    runAsUser: 1000830000
+    runAsGroup: 1000830000
+    fsGroup: 1000830000
+injector:
+  enabled: true
+  serviceAccount:
+    name: vault-agent-injector
+  securityContext:
+    runAsUser: 1000830000
+    runAsGroup: 1000830000
+    fsGroup: 1000830000

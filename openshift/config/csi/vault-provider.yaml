@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: vault-csi-provider
-  namespace: csi
+  namespace: csi-driver
   labels:
     app: vault-csi-provider
 spec:
