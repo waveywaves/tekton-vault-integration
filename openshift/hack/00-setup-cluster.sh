@@ -3,13 +3,11 @@ set -e
 
 echo "Setting up OpenShift cluster connection..."
 
-# Check if oc is installed
 if ! command -v oc &> /dev/null; then
     echo "Error: OpenShift CLI (oc) is not installed. Please install it first."
     exit 1
 fi
 
-# Check if we're logged in
 if ! oc whoami &> /dev/null; then
     echo "You are not logged into an OpenShift cluster."
     echo "Please log in using one of these methods:"
@@ -18,15 +16,12 @@ if ! oc whoami &> /dev/null; then
     exit 1
 fi
 
-# Create project
 echo "Creating project..."
 oc new-project tekton-vault || true
 
-# Set security context constraints
 echo "Setting security context constraints..."
 oc adm policy add-scc-to-user anyuid -z default -n tekton-vault
 
-# Print cluster info
 echo "Connected to cluster:"
 oc cluster-info
 

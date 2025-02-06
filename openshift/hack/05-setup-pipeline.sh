@@ -3,7 +3,7 @@ set -e
 
 echo "Setting up OpenShift Pipeline with Vault integration..."
 
-# Apply all manifests
+# apply all manifests
 oc apply -f openshift/config/pipeline/01-pipeline-sa.yaml
 oc apply -f openshift/config/pipeline/02-secret-provider-class.yaml
 oc apply -f openshift/config/pipeline/03-task.yaml

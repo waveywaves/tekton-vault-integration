@@ -1,0 +1,64 @@
+# the scc that vault csi provider needs to work
+# we need this for the following reasons:
+# 1. csi driver gotta mount host volumes to talk to container runtime n stuff
+# 2. provider needs some extra permissions to do its secret mounting magic
+# 3. default openshift sccs are too strict and wont let us do what we need
+#    (tried anyuid and nonroot sccs first but they don't let us mount host paths
+#     and anyuid only lets you run as any uid and doesn't help us with the other stuff we need)
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: vault-csi-provider-scc
+# lets it mount stuff from the host - needed for the socket communication thingy
+# anyuid scc doesn't allow this, which is why we need our own
+allowHostDirVolumePlugin: true
+# don't let it mess with these host things
+# keeping these false like nonroot scc does cause we don't need em
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+# needs this permission to do the secret mounting stuff
+# nonroot and anyuid don't allow this, which is another reason we need custom scc
+allowPrivilegeEscalation: true
+# but dont make it too powerful
+# keeping this false like nonroot does - no need for full privileged mode
+allowPrivilegedContainer: false
+allowedCapabilities: null
+defaultAddCapabilities: null
+# let it use whatever user/group ids it wants for the volumes
+# this part is similar to what anyuid lets you do
+fsGroup:
+  type: RunAsAny
+groups: []
+priority: null
+readOnlyRootFilesystem: false
+# dont need these capabilities so we're dropping them
+# nonroot drops these too so we know its safe
+requiredDropCapabilities:
+- KILL
+- MKNOD
+- SETUID
+- SETGID
+# can run as any user cause it needs that for mounting and stuff
+# this is like anyuid but we need the other stuff too
+runAsUser:
+  type: RunAsAny
+# selinux needs to be flexible cause openshift is kinda picky bout it
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+# only our csi driver can use this scc - nobody else allowed
+users:
+- system:serviceaccount:csi:secrets-store-csi-driver
+# just the volume types it actually needs - nothing extra
+# we're allowing more volume types than nonroot but we need em for csi stuff
+volumes:
+- hostPath
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret 

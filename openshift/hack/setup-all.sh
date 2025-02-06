@@ -3,10 +3,10 @@ set -e
 
 echo "Starting complete setup process..."
 
-# Get the script's directory
+# get the script's directory
 SCRIPT_DIR="$(dirname "$0")"
 
-# Run all setup scripts in sequence
+# run all setup scripts in sequence
 "${SCRIPT_DIR}/00-setup-cluster.sh"
 "${SCRIPT_DIR}/01-install-openshift-pipelines.sh"
 "${SCRIPT_DIR}/02-install-vault.sh"

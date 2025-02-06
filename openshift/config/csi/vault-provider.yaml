@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: vault-csi-provider
+  namespace: csi
+  labels:
+    app: vault-csi-provider
+spec:
+  selector:
+    matchLabels:
+      app: vault-csi-provider
+  template:
+    metadata:
+      labels:
+        app: vault-csi-provider
+    spec:
+      serviceAccountName: secrets-store-csi-driver
+      containers:
+        - name: provider
+          image: hashicorp/vault-csi-provider:1.4.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - --endpoint=/provider/vault.sock
+            - --debug=false
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 50m
+              memory: 100Mi
+          volumeMounts:
+            - name: providervol
+              mountPath: "/provider"
+      volumes:
+        - name: providervol
+          hostPath:
+            path: "/etc/kubernetes/secrets-store-csi-providers"
+            type: DirectoryOrCreate 

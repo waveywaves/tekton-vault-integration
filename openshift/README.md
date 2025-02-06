@@ -51,7 +51,6 @@ All configuration files are in the `openshift/config` directory:
 - OpenShift Pipelines is based on Tekton but is installed via the OpenShift Pipelines Operator
 - The service account and security context configurations are adjusted for OpenShift's security requirements
 - The CSI driver installation is handled differently in OpenShift compared to kind/kubernetes
-- You need cluster-admin privileges to install operators and configure security context constraints
 
 ## Cleanup
 
