@@ -10,11 +10,8 @@ oc create namespace csi || true
 # set up the privileged scc first - csi driver needs this to work
 oc apply -f openshift/config/csi/csi-scc.yaml
 
-# create and set up rbac - this creates the service account
-oc apply -f openshift/config/csi/rbac.yaml
-
 # give the service account access to our privileged scc
-oc adm policy add-scc-to-user csi-privileged-scc -z secrets-store-csi-driver -n csi-driver
+oc adm policy add-scc-to-user csi-privileged-scc -z secrets-store-csi-driver -n csi-driver || true
 
 # add the helm repo for the csi driver
 helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts

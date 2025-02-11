@@ -1,4 +1,4 @@
-# yo this is the scc that the csi driver needs
+# this is the scc that the csi driver needs
 # we need this because:
 # 1. csi driver needs privileged access for mounting
 # 2. needs hostpath volumes for the csi socket
