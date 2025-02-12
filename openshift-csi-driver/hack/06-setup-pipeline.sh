@@ -3,10 +3,10 @@ set -e
 
 echo "Setting up OpenShift Pipeline with Vault integration..."
 
-# Set privileged security context for the namespace
+# set privileged security context for the namespace
 oc label namespace tekton-vault pod-security.kubernetes.io/enforce=privileged --overwrite
 
-# Grant CSI driver permissions to create tokens
+# grant CSI driver permissions to create tokens
 oc create clusterrolebinding csi-token-creator \
     --clusterrole=system:node \
     --serviceaccount=csi-driver:secrets-store-csi-driver || true
